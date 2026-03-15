@@ -23,7 +23,7 @@ Feature correspondances between two images is obtain using LoFTR (Local Feature 
 The output of this stage is two set of matched point pairs $(x_1, y_1) - (x_2, y_2)$, which is later used for Pose Recovery
 
 ## Pose recovery
-From intrinsic matrix K and correspondances pairs $(x_1, y_1) - (x_2, y_2)$
+From intrinsic matrix $K$ and correspondances pairs $(x_1, y_1) - (x_2, y_2)$
 The following information is obtained:
 - Essential Matrix $E$
 - Rotational Matrix $R$
