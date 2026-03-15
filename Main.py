@@ -29,6 +29,7 @@ Z2 = points_cam2[:, 2]
 
 valid = (Z1 > 0) & (Z2 > 0)
 points3D = points3D[valid]
+print(f"Final 3D reconstruction count: {len(points3D)}")
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')

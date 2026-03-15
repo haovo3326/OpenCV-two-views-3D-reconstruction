@@ -43,7 +43,7 @@ def get_correspondence():
     conf = correspondences["confidence"].cpu().numpy()
 
     # Keep only stronger matches
-    mask = conf > 0.36
+    mask = conf > 0.3
     pts1 = pts1[mask]
     pts2 = pts2[mask]
     conf = conf[mask]
@@ -63,6 +63,7 @@ def get_correspondence():
     return pts1, pts2
 
 # pts1, pts2 = get_correspondence()
+# print(f"Number of correspondences: {len(pts1)}")
 #
 # # copy images for drawing
 # draw1 = img1.copy()
