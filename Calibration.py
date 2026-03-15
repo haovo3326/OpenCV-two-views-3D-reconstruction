@@ -4,29 +4,32 @@ import os
 
 # Calibrate
 def calibrate():
-    # Inner corners: (columns, rows)
-    pattern = (4, 4)
-    # Real square size, for example 25 mm
+
+    pattern = (7, 7)
     square_size = 25.0
-    # Prepare one board's 3D points
+
     objp = np.zeros((pattern[0] * pattern[1], 3), np.float32)
     objp[:, :2] = np.mgrid[0:pattern[0], 0:pattern[1]].T.reshape(-1, 2)
     objp *= square_size
 
-    objpoints = []  # 3D points in board coordinates
-    imgpoints = []  # 2D points in image coordinates
+    objpoints = []
+    imgpoints = []
 
     image_folder = "Calibration images"
-    image_size = None
 
     for filename in os.listdir(image_folder):
+
         path = os.path.join(image_folder, filename)
         img = cv2.imread(path)
 
         if img is None:
             continue
 
+        # Resize
+        img = cv2.resize(img, (1024, 1024))
+
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
         ret, corners = cv2.findChessboardCornersSB(gray, pattern)
 
         if not ret:
@@ -36,9 +39,24 @@ def calibrate():
         imgpoints.append(corners.astype(np.float32))
         objpoints.append(objp.copy())
 
+        # # -------- DISPLAY CHECK --------
+        # vis = img.copy()
+        # cv2.drawChessboardCorners(vis, pattern, corners, ret)
+        #
+        # cv2.imshow("Checkerboard Detection", vis)
+        # cv2.waitKey(500)   # show for 0.5 seconds
+        # # --------------------------------
+
         print(f"Detected: {filename}")
 
+    cv2.destroyAllWindows()
+
     _, K, _, _, _ = cv2.calibrateCamera(
-        objpoints, imgpoints, gray.shape[::-1], None, None
+        objpoints,
+        imgpoints,
+        (1024, 1024),
+        None,
+        None
     )
+
     return K
